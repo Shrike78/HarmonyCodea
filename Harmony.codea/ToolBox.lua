@@ -1,4 +1,5 @@
 -- ToolBox
+-- original source code by Grant (grant@enabled.com.au)
 
 ToolBox = class()
 
@@ -22,9 +23,8 @@ end
 
 function ToolBox:initBrushes()
     self.brushList = {
-       -- Brush(),
         Chrome(),
-        --Circles(),
+        Circles(),
         Discs(),
         Fur(),
         LongFur(),
