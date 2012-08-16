@@ -25,7 +25,11 @@ function ToolBox:init()
     iparameter("resetBrushStroke",0,1,0)
     watch("_currentBrush")
     iparameter("SelectedBrush",1,#self.brushList,1)
-    iparameter("showPalette",0,1,1)
+    if useCanvas then
+        iparameter("showPalette",0,1,1)
+    else
+        showPalette = 1
+    end
 
 end
 

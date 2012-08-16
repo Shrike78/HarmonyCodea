@@ -1,29 +1,36 @@
 
 supportedOrientations(LANDSCAPE_ANY)
 
-function setup()
+--useCanvas = true
 
+function setup()  
     --watch("fps")
-    canvas = mesh()
-    canvas.texture = image(WIDTH,HEIGHT)
-    canvas:addRect(WIDTH/2,HEIGHT/2,WIDTH,HEIGHT)
-    setContext(canvas.texture)
-    background(255, 255, 255, 255)
-    setContext()
+    if useCanvas then
+        canvas = mesh()
+        canvas.texture = image(WIDTH,HEIGHT)
+        canvas:addRect(WIDTH/2,HEIGHT/2,WIDTH,HEIGHT)
+        setContext(canvas.texture)
+        background(255, 255, 255, 255)
+        setContext()
+    else
+        backingMode(RETAINED)
+        background(255, 255, 255, 255)
+    end
     
     touchList = {}
-     
     toolbox = ToolBox()
     
     iparameter("clean_canvas",0,1,0)
     
     noSmooth()
-    background(255, 255, 255, 255)
+    
 end
 
 function draw()
     --fps = 1/DeltaTime
-    setContext(canvas.texture)
+    if useCanvas then
+        setContext(canvas.texture)
+    end
     for i = 1, #touchList do
         processTouches(table.remove(touchList,1))
     end
@@ -32,8 +39,10 @@ function draw()
         toolbox:getCurrentBrush():reset()
         background(255, 255, 255, 255)
     end
-    setContext()
-    canvas:draw()
+    if useCanvas then
+        setContext()
+        canvas:draw()
+    end
     toolbox:draw()
 end
 
