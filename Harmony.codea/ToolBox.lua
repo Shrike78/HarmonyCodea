@@ -1,7 +1,15 @@
 -- ToolBox
--- original source code by Grant (grant@enabled.com.au)
 
 ToolBox = class()
+
+local selectedPaletteIdx = 0
+local paletteOffset = 5
+local paletteSize = 30
+local selPaletteSize = 25
+local menuBar = 50
+local shadowWidth = 6
+local baseCol = 200
+local startPos = HEIGHT - 50
 
 function ToolBox:init()
 
@@ -14,8 +22,10 @@ function ToolBox:init()
     iparameter("blue",0, 255)
     iparameter("alpha", 0, 255, 255)
     iparameter("resetBrushStartStroke",0,1,0)
+    iparameter("resetBrushStroke",0,1,0)
     watch("_currentBrush")
     iparameter("SelectedBrush",1,#self.brushList,1)
+    iparameter("showPalette",0,1,1)
 
 end
 
@@ -23,6 +33,7 @@ end
 
 function ToolBox:initBrushes()
     self.brushList = {
+       -- Brush(),
         Chrome(),
         Circles(),
         Discs(),
@@ -47,6 +58,10 @@ function ToolBox:updateBrush()
         self.brushList[self.currentBrushIdx]:reset()
         self.currentBrushIdx = SelectedBrush
         _currentBrush = self.brushListName[self.currentBrushIdx]
+    end
+    if resetBrushStroke == 1 then
+        resetBrushStroke = 0
+        self.brushList[self.currentBrushIdx]:reset()
     end
 end
 
@@ -88,15 +103,6 @@ function ToolBox:setPaletteCol(index,r,g,b,a)
     c.a = a
 end
 
-local selectedPaletteIdx = 0
-local paletteOffset = 5
-local paletteSize = 30
-local selPaletteSize = 25
-local menuBar = 50
-local shadowWidth = 6
-local baseCol = 200
-local startPos = HEIGHT - 50
-
 function ToolBox:getPaletteId(y)
     for pCount = 1, #self.palette do
         local topPalSquare = (startPos - ((paletteSize + 5) * pCount)) + 
@@ -110,6 +116,28 @@ function ToolBox:getPaletteId(y)
 end
 
 function ToolBox:drawPalette()
+    
+    -- bit of eyecandy drop shadow
+    for shadow = 1, shadowWidth do
+        local gradFactor = 255 - (baseCol/shadowWidth) * shadow
+        fill(gradFactor, gradFactor, gradFactor, 255)
+        rect(0, 0, menuBar + shadowWidth - shadow, HEIGHT)
+    end
+
+    fill(234, 234, 234, 255)
+    rect(0, 0, menuBar, HEIGHT)
+    
+    --create the current brush style with white backing, 
+    -- white impotant when using alpha < 255
+    pushStyle()
+    stroke(255, 255, 255, 255)
+    strokeWidth(1)
+    fill(255)
+    ellipse(menuBar/2, HEIGHT - paletteSize, thicknessFill * 2)
+    fill(red,green,blue,alpha)
+    ellipse(menuBar/2, HEIGHT - paletteSize, thicknessFill * 2)
+    popStyle()
+    
     for pCount = 1, #self.palette do
         if selectedPaletteIdx == pCount then
             pushStyle()
@@ -149,28 +177,9 @@ function ToolBox:draw()
     
     self:updateBrush()
     
-    -- bit of eyecandy drop shadow
-    for shadow = 1, shadowWidth do
-        local gradFactor = 255 - (baseCol/shadowWidth) * shadow
-        fill(gradFactor, gradFactor, gradFactor, 255)
-        rect(0, 0, menuBar + shadowWidth - shadow, HEIGHT)
+    if showPalette == 1 then
+        self:drawPalette()
     end
-
-    fill(234, 234, 234, 255)
-    rect(0, 0, menuBar, HEIGHT)
-    
-    --create the current brush style with white backing, 
-    -- white impotant when using alpha < 255
-    pushStyle()
-    stroke(255, 255, 255, 255)
-    strokeWidth(1)
-    fill(255)
-    ellipse(menuBar/2, HEIGHT - paletteSize, thicknessFill * 2)
-    fill(red,green,blue,alpha)
-    ellipse(menuBar/2, HEIGHT - paletteSize, thicknessFill * 2)
-    popStyle()
-    
-    self:drawPalette()
     
     if selectedPaletteIdx ~= 0 then
         self:setPaletteCol(selectedPaletteIdx,red,green,blue,alpha)
@@ -178,7 +187,7 @@ function ToolBox:draw()
 end
 
 function ToolBox:touched(touch)
-    if touch.state == BEGAN then
+    if showPalette == 1 and touch.state == BEGAN then
         if touch.x < menuBar then
             handledColSelect = true
             local yColSelect = touch.y
