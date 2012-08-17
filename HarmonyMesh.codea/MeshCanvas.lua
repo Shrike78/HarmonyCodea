@@ -50,6 +50,30 @@ function MeshCanvas:line(x1,y1,x2,y2)
     end
 end
 
+function MeshCanvas:circle(x,y,d)
+    
+    local r = d/2
+    local numSegments = math.floor(
+        math.max(math.min(180, r * 180 / 3),10)
+    )
+    
+    local dtheta = 2 * math.pi / numSegments
+    
+    local x1 = x + r
+    local y1 = y
+    local x2 = 0
+    local y2 = 0
+    local theta = 0
+    for i = 1, numSegments do
+        theta = theta + dtheta
+        x2 = x + r * math.cos(theta)
+        y2 = y + r * math.sin(theta)
+        self:line(x1,y1,x2,y2)
+        x1 = x2
+        y1 = y2
+    end
+end
+
 function MeshCanvas:getMeshSize()
     return self.numOfRects
 end
