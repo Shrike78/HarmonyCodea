@@ -16,7 +16,7 @@ function ToolBox:init()
     self:initBrushes()
     self:initPalette()
     
-    parameter("thicknessFill", 2, 15, 2)
+    parameter("thicknessFill", 2, 25, 2)
     iparameter("red", 0, 255)
     iparameter("green",0, 255)
     iparameter("blue",0, 255)

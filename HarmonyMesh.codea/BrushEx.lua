@@ -19,6 +19,7 @@ function BrushEx:strokeStart(x,y)
     if resetBrushStartStroke == 1 then
         self:reset()
     end
+    canvas:beginDraw()
 end
 
 function BrushEx:touched(touch)

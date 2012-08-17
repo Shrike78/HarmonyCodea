@@ -15,12 +15,14 @@ function Brush:getName()
 end
 
 function Brush:strokeStart(x,y)
+    canvas:beginDraw()
 end
 
 function Brush:stroke(x,y)
 end
 
 function Brush:strokeEnd()
+    canvas:endDraw()
 end
 
 function Brush:touched(touch)
