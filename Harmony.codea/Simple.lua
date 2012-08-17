@@ -7,12 +7,10 @@ function Simple:init()
 end
 
 function Simple:stroke(x,y)
-    pushStyle()
     
     stroke(red,green,blue,alpha)
     strokeWidth(thicknessFill)
     
     line(self.prevX,self.prevY,x,y)
     
-    popStyle()
 end

@@ -13,8 +13,6 @@ function Squares:stroke(x,y)
     local angle = 1.57079633
     local px = math.cos(angle) * dx - math.sin(angle) * dy
     local py = math.sin(angle) * dx + math.cos(angle) * dy
-        
-    pushStyle()
     
     stroke(red,green,blue,alpha)
     strokeWidth(thicknessFill)
@@ -25,5 +23,4 @@ function Squares:stroke(x,y)
     line(x + px, y + py, x - px, y - py)
     line(x - px, y - py, self.prevX - px, self.prevY - py)
         
-    popStyle()
 end

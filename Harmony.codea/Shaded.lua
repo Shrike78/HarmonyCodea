@@ -7,8 +7,6 @@ function Shaded:init()
 end
 
 function Shaded:stroke(x,y)
-    
-    pushStyle()
                 
     strokeWidth(thicknessFill)
             
@@ -26,5 +24,4 @@ function Shaded:stroke(x,y)
         end
     end
 
-    popStyle()
 end

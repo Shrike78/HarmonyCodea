@@ -16,8 +16,6 @@ function Circles:stroke(x,y)
     local cy = math.floor(y / 100) * 100 + 50
     local steps = math.floor( math.random() * 10 )
     local step_delta = d / steps
-        
-    pushStyle()
     
     stroke(red,green,blue,alpha)
     strokeWidth(thicknessFill)
@@ -26,5 +24,4 @@ function Circles:stroke(x,y)
         ellipse(cx,cy, (steps - i) * step_delta)
     end
         
-    popStyle()
 end

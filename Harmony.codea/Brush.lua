@@ -23,20 +23,26 @@ end
 function Brush:strokeEnd()
 end
 
-function Brush:touched(touch)    
+function Brush:touched(touch)
     if touch.state == BEGAN and not self.touchId then
         self.touchId = touch.id
+        pushStyle()
         self:strokeStart(touch.x,touch.y)
+        popStyle()
         self.prevX = touch.x
         self.prevY = touch.y
         
     elseif touch.id == self.touchId then
         if touch.state == MOVING then
+            pushStyle()            
             self:stroke(touch.x,touch.y)
+            popStyle()            
             self.prevX = touch.x
             self.prevY = touch.y
         elseif touch.state == ENDED then
+            pushStyle()
             self:strokeEnd()
+            popStyle()
             self.touchId = nil
         end
     end

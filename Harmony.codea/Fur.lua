@@ -7,8 +7,6 @@ end
 
 function Fur:stroke(x,y)
     
-    pushStyle()
-    
     stroke(red,green,blue,alpha)
     strokeWidth(thicknessFill)
     
@@ -29,5 +27,5 @@ function Fur:stroke(x,y)
                 y - dy * 0.5)
         end
     end
-    popStyle()
+
 end

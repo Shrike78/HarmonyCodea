@@ -7,7 +7,6 @@ function Sketchy:init()
 end
 
 function Sketchy:stroke(x,y)
-    pushStyle()  
 
     strokeWidth(thicknessFill)
     stroke(red,green,blue,alpha)
@@ -32,5 +31,4 @@ function Sketchy:stroke(x,y)
 
         end
     end
-    popStyle()
 end

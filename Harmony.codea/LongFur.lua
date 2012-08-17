@@ -7,8 +7,6 @@ end
 
 function LongFur:stroke(x,y)
     
-    pushStyle()
-    
     stroke(red,green,blue,alpha)
     strokeWidth(thicknessFill)
     
@@ -30,5 +28,4 @@ function LongFur:stroke(x,y)
                 self.points[i].y - dy * size)
         end
     end
-    popStyle()
 end

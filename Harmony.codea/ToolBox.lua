@@ -42,6 +42,7 @@ function ToolBox:initBrushes()
         Circles(),
         Discs(),
         Fur(),
+        Grant(),
         LongFur(),
         Shaded(),
         Simple(),

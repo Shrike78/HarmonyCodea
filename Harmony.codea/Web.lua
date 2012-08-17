@@ -7,7 +7,6 @@ function Web:init()
 end
 
 function Web:stroke(x,y)
-    pushStyle()
     
     stroke(red,green,blue,alpha)
     strokeWidth(thicknessFill)
@@ -30,5 +29,4 @@ function Web:stroke(x,y)
                 self.points[i].y - dy)
         end
     end
-    popStyle()
 end

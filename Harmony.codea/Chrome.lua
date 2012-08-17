@@ -7,8 +7,6 @@ end
 
 function Chrome:stroke(x,y)
     
-    pushStyle()
-    
     stroke(red,green,blue,alpha)
     strokeWidth(thicknessFill)
     
@@ -31,5 +29,4 @@ function Chrome:stroke(x,y)
         end
     end
     
-    popStyle()
 end
