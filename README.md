@@ -7,8 +7,20 @@ written in html5 and developed by mrdoob.
 The toolbox interface takes inspiration from the one developed by Grant (grant@enabled.com.au) in his [Brush](http://twolivesleft.com/Codea/Talk/discussion/comment/5649#Comment_5649) 
 Codea project
 
-Rendering Modes
----------------
+There're two different projects:
+
+- Harmony.codea is the original project that render using codea rendering functions like line, stroke, strokeWidth,
+ellipse, ecc. It can be run with two different rendering modes explained later.
+
+-HarmonyMesh.codea is a modified version (on suggestion of [Andrew Stacey](http://www.math.ntnu.no/~stacey/) who has done something similar
+starting from Harmony.codea), where lines are remapped on codea mesh drawing, using the MeshCanvas class utility.
+The pros are fast draw with the possibility to hide / shows interfaces over the drawing (the actual UI implementation is 
+very poor considering the possibilities), while the cons are the loss of brushes like Discs or Circles that rely
+on ellipse rendering
+
+
+Harmony.codea Rendering Modes
+-----------------------------
 
 It's possible to run the app in 2 different rendering modes:
 

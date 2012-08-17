@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Author</key>
+	<string>Luca Ferrara</string>
+	<key>Buffer Order</key>
+	<array>
+		<string>License</string>
+		<string>Main</string>
+		<string>MeshCanvas</string>
+		<string>ToolBox</string>
+		<string>Brush</string>
+		<string>BrushEx</string>
+		<string>Chrome</string>
+		<string>Fur</string>
+		<string>LongFur</string>
+		<string>Shaded</string>
+		<string>Simple</string>
+		<string>Sketchy</string>
+		<string>Squares</string>
+		<string>Web</string>
+	</array>
+	<key>Created</key>
+	<string>2012-05-05 05:41:41 +0000</string>
+	<key>Description</key>
+	<string>No description available</string>
+</dict>
+</plist>
