@@ -15,8 +15,8 @@ ellipse, ecc. It can be run with two different rendering modes explained later.
 - HarmonyMesh.codea is a modified version (on suggestion of [Andrew Stacey](http://www.math.ntnu.no/~stacey/) who has done something similar
 starting from Harmony.codea), where lines are remapped on codea mesh drawing, using the MeshCanvas class utility.
 The pros are fast draw with the possibility to hide / shows interfaces over the drawing (the actual UI implementation is 
-very poor considering the possibilities), while the cons are the loss of brushes like Discs or Circles that rely
-on ellipse rendering
+very poor considering the possibilities), while the cons are the loss of quality for brushes like Discs or Circles that rely
+on ellipse rendering. The quality is so far from the original version that they can hardly be used for drawing.
 
 
 Harmony.codea Rendering Modes

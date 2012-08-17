@@ -34,6 +34,7 @@ end
 function ToolBox:initBrushes()
     self.brushList = {
         Chrome(),
+        Circles(),
         Discs(),
         Fur(),
         LongFur(),
