@@ -6,11 +6,11 @@ function Simple:init()
     Brush.init(self,"Simple")
 end
 
-function Simple:stroke(x,y)
+function Simple:stroke(p)
     
     canvas:stroke(red,green,blue,alpha)
     canvas:strokeWidth(thicknessFill)
     
-    canvas:line(self.prevX,self.prevY,x,y)
+    canvas:line(self.prev,p)
     
 end

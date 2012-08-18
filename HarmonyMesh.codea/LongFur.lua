@@ -5,27 +5,25 @@ function LongFur:init()
     BrushEx.init(self,"LongFur")
 end
 
-function LongFur:stroke(x,y)
+function LongFur:stroke(p)
     
     canvas:stroke(red,green,blue,alpha)
     canvas:strokeWidth(thicknessFill)
     
-    canvas:line(self.prevX,self.prevY,x,y) 
+    canvas:line(self.prev,p) 
     
     canvas:stroke(red,green,blue,alpha * 0.1)
     
-    local size, dx, dy, d
+    local size, dt, d
     
     for i = 1, #self.points do
         size = -math.random()
-        dx = self.points[i].x - self.points[self.count].x
-        dy = self.points[i].y - self.points[self.count].y
-        d = dx * dx + dy * dy
+        dt = self.points[i] - self.points[self.count]
+        d = dt:lenSqr()
         if d < 4000 and math.random() > d/4000 then
-            canvas:line(self.points[self.count].x + dx * size,
-                self.points[self.count].y + dy * size,
-                self.points[i].x - dx * size,
-                self.points[i].y - dy * size)
+            dt = dt * size
+            canvas:line(self.points[self.count] + dt,
+                self.points[i] - dt)
         end
     end
 end

@@ -5,26 +5,24 @@ function Fur:init()
     BrushEx.init(self,"Fur")
 end
 
-function Fur:stroke(x,y)
+function Fur:stroke(p)
     
     canvas:stroke(red,green,blue,alpha)
     canvas:strokeWidth(thicknessFill)
     
-    canvas:line(self.prevX,self.prevY,x,y) 
+    canvas:line(self.prev,p) 
     
     canvas:stroke(red,green,blue,alpha * 0.2)
     
-    local dx, dy, d
+    local dt, d
     
     for i = 1, #self.points do
-        dx = self.points[i].x - self.points[self.count].x
-        dy = self.points[i].y - self.points[self.count].y
-        d = dx * dx + dy * dy
+        dt = self.points[i] - self.points[self.count]
+
+        d = dt:lenSqr()
         if d < 2000 and math.random() > d/2000 then
-            canvas:line(x + dx * 0.5,
-                y + dy * 0.5,
-                x - dx * 0.5,
-                y - dy * 0.5)
+            dt = dt * 0.5
+            canvas:line(p + dt, p - dt)
         end
     end
 

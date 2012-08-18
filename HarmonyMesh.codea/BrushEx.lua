@@ -15,7 +15,7 @@ function BrushEx:reset()
     self.count = 1
 end
 
-function BrushEx:strokeStart(x,y)
+function BrushEx:strokeStart(p)
     if resetBrushStartStroke == 1 then
         self:reset()
     end
@@ -26,15 +26,16 @@ function BrushEx:touched(touch)
     if touch.state == BEGAN and not self.touchId then
         self.touchId = touch.id
         self:strokeStart(touch.x,touch.y)
-        self.prevX = touch.x
-        self.prevY = touch.y
+        self.prev.x = touch.x
+        self.prev.y = touch.y
         
     elseif touch.id == self.touchId then
         if touch.state == MOVING then
-            table.insert(self.points,vec2(touch.x,touch.y))
-            self:stroke(touch.x,touch.y)
-            self.prevX = touch.x
-            self.prevY = touch.y
+            local p = vec2(touch.x,touch.y)
+            table.insert(self.points,p)
+            self:stroke(p)
+            self.prev.x = touch.x
+            self.prev.y = touch.y
             self.count = self.count + 1
         elseif touch.state == ENDED then
             self:strokeEnd()

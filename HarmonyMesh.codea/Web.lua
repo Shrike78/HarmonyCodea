@@ -6,27 +6,25 @@ function Web:init()
     BrushEx.init(self,"Web")
 end
 
-function Web:stroke(x,y)
+function Web:stroke(p)
     
     canvas:stroke(red,green,blue,alpha)
     canvas:strokeWidth(thicknessFill)
     
-    canvas:line(self.prevX,self.prevY,x,y)
+    canvas:line(self.prev,p)
 
     canvas:stroke(red,green,blue, 0.2 * alpha)
     
-    local dx, dy, d
+    local dt, d
 
     for i = 1, #self.points do
-        dx = self.points[i].x - self.points[self.count].x
-        dy = self.points[i].y - self.points[self.count].y
-        d = dx * dx + dy * dy;
+        dt = self.points[i] - self.points[self.count]
+
+        d = dt:lenSqr()
 
         if (d < 2500 and math.random() > 0.9) then
-            canvas:line(self.points[self.count].x + dx, 
-                self.points[self.count].y + dy,
-                self.points[i].x - dx,
-                self.points[i].y - dy)
+            canvas:line(self.points[self.count] + dt, 
+                self.points[i] - dt)
         end
     end
 end

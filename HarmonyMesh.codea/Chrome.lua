@@ -5,27 +5,24 @@ function Chrome:init()
     BrushEx.init(self,"Chrome")
 end
 
-function Chrome:stroke(x,y)
+function Chrome:stroke(p)
     
     canvas:stroke(red,green,blue,alpha)
     canvas:strokeWidth(thicknessFill)
     
-    canvas:line(self.prevX,self.prevY,x,y) 
+    canvas:line(self.prev,p) 
     
     canvas:stroke(red,green,blue,alpha * 0.2)
     
-    local dx, dy, d
+    local dt, d
     
     for i = 1, #self.points do
-        dx = self.points[i].x - self.points[self.count].x
-        dy = self.points[i].y - self.points[self.count].y
-        d = dx * dx + dy * dy
-        if d < 1000 then          
-            canvas:line(self.points[self.count].x + dx * 0.2,
-                self.points[self.count].y + dy * 0.2,
-                self.points[i].x - dx * 0.2,
-                self.points[i].y - dy * 0.2)
-            
+        dt = self.points[i] - self.points[self.count]
+        d = dt:lenSqr()
+        if d < 1000 then
+            dt = dt * 0.2
+            canvas:line(self.points[self.count] + dt,
+                self.points[i] - dt)           
         end
     end
     
