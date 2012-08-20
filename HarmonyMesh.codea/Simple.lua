@@ -11,6 +11,6 @@ function Simple:stroke(p)
     canvas:stroke(red,green,blue,alpha)
     canvas:strokeWidth(thicknessFill)
     
-    canvas:line(self.prev,p)
+    canvas:line(self.prev,p,0)
     
 end

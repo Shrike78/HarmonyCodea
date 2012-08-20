@@ -9,6 +9,7 @@ function MeshCanvas:init()
     self.canvas:addRect(WIDTH/2,HEIGHT/2,WIDTH,HEIGHT)
     
     self.currentDraw = mesh()
+    self.meshes = {}
     self.color = color()
     self.thickness = 1
     self.numOfRects = 0
@@ -35,8 +36,14 @@ end
     
 function MeshCanvas:endDraw()
     setContext(self.canvas.texture)
+    for _,m in pairs(self.meshes) do
+        m:draw()
+    end
     self.currentDraw:draw()
     setContext()
+    for _,m in pairs(self.meshes) do
+        m:clear()
+    end
     self.currentDraw:clear()
     self.numOfRects = 0
 end
@@ -45,19 +52,44 @@ function MeshCanvas:strokeWidth(thickness)
     self.thickness = thickness
 end
 
-function MeshCanvas:line1(s,e)
-
+function MeshCanvas:line1(s,e,id)
+    
+    if id ~= nil then
+        if not self.meshes[id] then
+            self.meshes[id] = mesh()
+        end
+    end
+    
+    local lines
+    local cline = false
+    
+    if id ~= nil then
+        lines = self.meshes[id]
+        cline = true
+    else
+        lines = self.currentDraw
+    end
+    
     local v = e - s
     local angle = math.atan2(v.y,v.x)
     local l = v:len()
 
     v = s + v/2
-
+    
     if not self.smooth then
-        local id = self.currentDraw:addRect(v.x,v.y,
+        local id = lines:addRect(v.x,v.y,
                 l,self.thickness,angle)
-        self.currentDraw:setRectColor(id,self.color)
+        lines:setRectColor(id,self.color)
+        
+        if cline and id > 1 then
+            local idx = (id - 2) * 6
+            lines:vertex(idx+3, lines:vertex(idx+8))
+            lines:vertex(idx+5, lines:vertex(idx+8))
+            lines:vertex(idx+6, lines:vertex(idx+7))
+        end
+        
         self.numOfRects = self.numOfRects + 1
+        
     else
         local a = self.color.a
         local td = 0.5
@@ -71,22 +103,31 @@ function MeshCanvas:line1(s,e)
         local a3 = 255 * (a - as) / (255 - as)
 
         self.color.a = a1       
-        local id = self.currentDraw:addRect(v.x,v.y,
-            l + d1, self.thickness + d1, angle)
-        self.currentDraw:setRectColor(id,self.color)
+        local id = lines:addRect(v.x,v.y, l + d1, 
+            self.thickness + d1, angle)
+        lines:setRectColor(id,self.color)
             
         self.color.a = a2
-        local id = self.currentDraw:addRect(v.x,v.y,
-            l + d2, self.thickness + d2,angle)
-        self.currentDraw:setRectColor(id,self.color)
+        id = lines:addRect(v.x,v.y, l + d2, 
+            self.thickness + d2,angle)
+        lines:setRectColor(id,self.color)
             
         self.color.a = a3
-        local id = self.currentDraw:addRect(v.x,v.y,
-            l,self.thickness,angle)
-        self.currentDraw:setRectColor(id,self.color)
+        id = lines:addRect(v.x,v.y, l, self.thickness,angle)
+        lines:setRectColor(id,self.color)
         
         self.color.a = a
         self.thickness = self.thickness + td
+
+        if cline and id > 3 then
+            local idx = (id - 6) * 6
+            for i = 1,3 do
+                lines:vertex(idx+3, lines:vertex(idx+20))
+                lines:vertex(idx+5, lines:vertex(idx+20))
+                lines:vertex(idx+6, lines:vertex(idx+19))
+                idx = idx + 6
+            end
+        end
         self.numOfRects = self.numOfRects + 3
     end
 end
@@ -178,9 +219,9 @@ function MeshCanvas:line2(s,e)
 
 end
 
-function MeshCanvas:line(p1,p2)
+function MeshCanvas:line(p1,p2,id)
     if line_method == 1 then
-        self:line1(p1,p2)
+        self:line1(p1,p2,id)
     else
         if self.smooth then
             local t = self.thickness
@@ -193,6 +234,10 @@ function MeshCanvas:line(p1,p2)
     end
 end
 
+--[[
+Slow. Replace line call with a specific line implementation to
+avoid all the function calls and also the final end draw now used to reset the line used for each circle
+--]]
 function MeshCanvas:circle(c,d)    
     local r = d/2
     local numSegments = math.floor( 2 * math.pi * r / 
@@ -206,10 +251,11 @@ function MeshCanvas:circle(c,d)
     for i = 1, numSegments do
         theta = theta + dtheta
         p2 = c + vr:rotate(theta)
-        self:line(p1,p2)
+        self:line(p1,p2,0)
         p1.x = p2.x
         p1.y = p2.y
     end
+    self:endDraw()
 end
 
 function MeshCanvas:getMeshSize()
@@ -226,5 +272,8 @@ end
 
 function MeshCanvas:draw()
     self.canvas:draw()
+    for _,m in pairs(self.meshes) do
+        m:draw()
+    end
     self.currentDraw:draw()
 end

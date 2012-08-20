@@ -11,7 +11,7 @@ function Web:stroke(p)
     canvas:stroke(red,green,blue,alpha)
     canvas:strokeWidth(thicknessFill)
     
-    canvas:line(self.prev,p)
+    canvas:line(self.prev,p,0)
 
     canvas:stroke(red,green,blue, 0.2 * alpha)
     

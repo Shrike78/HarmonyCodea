@@ -11,7 +11,7 @@ function Sketchy:stroke(p)
     canvas:strokeWidth(thicknessFill)
     canvas:stroke(red,green,blue,alpha)
     
-    canvas:line(self.prev,p)
+    canvas:line(self.prev,p,0)
    
     local dt, d
 
