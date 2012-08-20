@@ -52,23 +52,13 @@ function MeshCanvas:strokeWidth(thickness)
     self.thickness = thickness
 end
 
-function MeshCanvas:line1(s,e,id)
+function MeshCanvas:line1(s,e,lineID)
     
-    if id ~= nil then
-        if not self.meshes[id] then
-            self.meshes[id] = mesh()
-        end
+    if lineID and not self.meshes[lineID] then
+        self.meshes[lineID] = mesh()
     end
     
-    local lines
-    local cline = false
-    
-    if id ~= nil then
-        lines = self.meshes[id]
-        cline = true
-    else
-        lines = self.currentDraw
-    end
+    local lines = lineID and self.meshes[lineID] or self.currentDraw
     
     local v = e - s
     local angle = math.atan2(v.y,v.x)
@@ -81,50 +71,58 @@ function MeshCanvas:line1(s,e,id)
                 l,self.thickness,angle)
         lines:setRectColor(id,self.color)
         
-        if cline and id > 1 then
+        if lineID and id > 1 then
             local idx = (id - 2) * 6
             lines:vertex(idx+3, lines:vertex(idx+8))
             lines:vertex(idx+5, lines:vertex(idx+8))
             lines:vertex(idx+6, lines:vertex(idx+7))
         end
-        
         self.numOfRects = self.numOfRects + 1
         
-    else
+    else        
         local a = self.color.a
         local td = 0.5
         self.thickness = self.thickness - td
         local a1 = a/6
         local a2 = a/2
-        local d1 = 2
-        local d2 = .8
-        
         local as = a1 + a2 * (255 - a1)/255
         local a3 = 255 * (a - as) / (255 - as)
+        local _d = {2, .8, 0}
+        local _a = {a1, a2, a3}
+        local id
+             
+        for i=1,3 do
+            self.color.a = _a[i]       
+            id = lines:addRect(v.x,v.y, l + _d[i], 
+            self.thickness + _d[i], angle)
+            lines:setRectColor(id,self.color)
+        end
 
-        self.color.a = a1       
-        local id = lines:addRect(v.x,v.y, l + d1, 
-            self.thickness + d1, angle)
-        lines:setRectColor(id,self.color)
-            
-        self.color.a = a2
-        id = lines:addRect(v.x,v.y, l + d2, 
-            self.thickness + d2,angle)
-        lines:setRectColor(id,self.color)
-            
-        self.color.a = a3
-        id = lines:addRect(v.x,v.y, l, self.thickness,angle)
-        lines:setRectColor(id,self.color)
-        
         self.color.a = a
         self.thickness = self.thickness + td
 
-        if cline and id > 3 then
+        if lineID and id > 3 then
             local idx = (id - 6) * 6
             for i = 1,3 do
+--[[
+                local v1 = (lines:vertex(idx+3) + 
+                    lines:vertex(idx+20))/2
+                local v2 = (lines:vertex(idx+6) + 
+                    lines:vertex(idx+19))/2
+                lines:vertex(idx+3, v1)
+                lines:vertex(idx+5, v1)
+                lines:vertex(idx+6, v2)
+                lines:vertex(idx+20, v1)
+                lines:vertex(idx+19, v2)
+                lines:vertex(idx+22, v2)
+
+--]]
+---[[
                 lines:vertex(idx+3, lines:vertex(idx+20))
                 lines:vertex(idx+5, lines:vertex(idx+20))
                 lines:vertex(idx+6, lines:vertex(idx+19))
+--]]
+
                 idx = idx + 6
             end
         end
