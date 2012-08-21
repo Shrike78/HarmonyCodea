@@ -10,8 +10,8 @@ function setup()
     toolbox = ToolBox()
     
     iparameter("clean_canvas",0,1,0)
-    iparameter("dsmooth",0,1,0)
-    iparameter("line_method",1,2,1)
+    iparameter("dsmooth",0,1,1)
+ --   iparameter("line_method",1,2,1)
     
     noSmooth()
     
