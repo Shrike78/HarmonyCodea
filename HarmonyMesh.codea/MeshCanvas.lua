@@ -126,11 +126,8 @@ end
 
 function MeshCanvas:circle(c,d)    
     local r = d/2
-    local numSegments =  2 * math.pi * r
-    if r > 10 then
-        numSegments = numSegments * 20 / (r*3)
-    end
-    numSegments = math.floor(numSegments)
+    
+	local numSegments =  (d < 10) and math.floor(d * 4) or 40
     
     local dtheta = 2 * math.pi / numSegments
     local vr = vec2(r,0)
